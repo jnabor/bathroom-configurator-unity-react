@@ -6,26 +6,31 @@ using UnityEngine.UI;
 public class SwapHandler : MonoBehaviour
 {
     public GameObject Fixture1;
-    public GameObject Fixture2; 
+    public GameObject Fixture2;
+    public GameObject Fixture3; 
 
-    bool show1 = true;
-    bool show2 = false;
 
     public void SetFixture(string name)
     {
         Debug.Log("Set Fixture: " + name);
-        
+        Fixture1.SetActive(false);
+        Fixture2.SetActive(false);
+        Fixture3.SetActive(false);
+
         if(name.Equals("1"))
         {
-            Fixture1.SetActive(false);
+            Fixture1.SetActive(true);
+        } 
+
+        if(name.Equals("2"))
+        {
             Fixture2.SetActive(true);
         } 
-        else
+
+        if(name.Equals("3"))
         {
-            Fixture1.SetActive(true);
-            Fixture2.SetActive(false);
+            Fixture3.SetActive(true);
         } 
-        
     }
 
     // Start is called before the first frame update
@@ -33,9 +38,7 @@ public class SwapHandler : MonoBehaviour
     {
         Debug.Log("Fixture 1: " + Fixture1.name);
         Debug.Log("Fixture 2: " + Fixture2.name);
-
-        //_Object1.SetActive(show1);
-        //_Object2.SetActive(show2);
+        Debug.Log("Fixture 3: " + Fixture3.name);
     }
 
     // Update is called once per frame
