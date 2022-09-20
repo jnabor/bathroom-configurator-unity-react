@@ -2,14 +2,9 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Unity, useUnityContext } from 'react-unity-webgl';
 
 import Typography from '@mui/material/Typography';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import IconButton from '@mui/material/IconButton';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import Tooltip from '@mui/material/Tooltip';
 
 import { Progress } from './common/components/Progress';
+import { Controls } from './common/components/Controls';
 
 import './App.css';
 
@@ -44,32 +39,9 @@ export const Configurator = () => {
     });
     const [selection, setSelection] = useState('1');
 
-
-    const progress = useMemo(() => Math.round(loadingProgression * 100), [loadingProgression])
-
-    const handleScreenshot = useCallback(() => {
-        const data = takeScreenshot('image/jpg', 0.9);
-
-        if (data) {
-            const image = new Image(960, 600);
-            image.src = data;
-            const show = window.open('', 'popup', 'width=960,height=600');
-            show && show.document.write(image.outerHTML);
-        } else {
-            console.log('no data');
-        }
-    }, [takeScreenshot]);
-
-    const handleFullscreen = useCallback(() => {
-        requestFullscreen(true);
-    }, [requestFullscreen]);
-
-    const handleSelect = useCallback(
-        (event: React.MouseEvent<HTMLElement>, selected: string) => {
-            setSelection(selected);
-            sendMessage('Button-1', 'SetFixture', selected);
-        },
-        [setSelection, sendMessage],
+    const progress = useMemo(
+        () => Math.round(loadingProgression * 100),
+        [loadingProgression],
     );
 
     const handleSetSelection = useCallback(
@@ -99,48 +71,13 @@ export const Configurator = () => {
                     </div>
                 )}
                 <Unity className='unity' unityProvider={unityProvider} />
-                <div className='controls'>
-                    <div className='selector'>
-                        <ToggleButtonGroup
-                            color='primary'
-                            value={selection}
-                            exclusive
-                            onChange={handleSelect}
-                            aria-label='Platform'
-                        >
-                            <ToggleButton value='1'>SINK 1</ToggleButton>
-                            <ToggleButton value='2'>SINK 2</ToggleButton>
-                            <ToggleButton value='3'>SINK 3</ToggleButton>
-                        </ToggleButtonGroup>
-                    </div>
-                    <div className='screen'>
-                        <div className='screen-control-wrapper'>
-                            <Tooltip title='Take Screenshot'>
-                                <IconButton
-                                    onClick={handleScreenshot}
-                                    color='primary'
-                                    aria-label='take screeshot'
-                                    component='label'
-                                >
-                                    <PhotoCameraIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-
-                        <div className='screen-control-wrapper'>
-                            <Tooltip title='Enter Fullscreen'>
-                                <IconButton
-                                    onClick={handleFullscreen}
-                                    color='primary'
-                                    aria-label='enter fullscreen'
-                                    component='label'
-                                >
-                                    <FullscreenIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    </div>
-                </div>
+                <Controls
+                    requestFullscreen={requestFullscreen}
+                    takeScreenshot={takeScreenshot}
+                    setSelection={setSelection}
+                    sendMessage={sendMessage}
+                    selection={selection}
+                />
             </div>
         </div>
     );
