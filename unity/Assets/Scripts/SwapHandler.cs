@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Runtime.InteropServices;
 
 public class SwapHandler : MonoBehaviour
 {
+    [DllImport("__Internal")]
+    private static extern void SetSelection (string selection);
+
     public GameObject Fixture1;
     public GameObject Fixture2;
     public GameObject Fixture3; 
@@ -31,6 +35,11 @@ public class SwapHandler : MonoBehaviour
         {
             Fixture3.SetActive(true);
         } 
+
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+        Debug.Log("Dispatch Set Selection: " + name);
+        SetSelection(name);
+#endif
     }
 
     // Start is called before the first frame update
