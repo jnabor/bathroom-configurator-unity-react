@@ -25,7 +25,6 @@ public class SwapHandler : MonoBehaviour
             Fixture1.SetActive(true);
             Fixture2.SetActive(false);
         } 
-
         
     }
 
