@@ -48,9 +48,13 @@ export const Configurator = () => {
     );
 
     const handleScreenshot = useCallback(() => {
-        const data = takeScreenshot('image/jpeg', 1.0);
-        if (data !== null) {
-            window.open(data, 'popup', 'width=960,height=600');
+        const data = takeScreenshot('image/jpg', 0.9);
+
+        if (data) {
+            const image = new Image(960, 600);
+            image.src = data;
+            const show = window.open('', 'popup', 'width=960,height=600');
+            show && show.document.write(image.outerHTML);
         } else {
             console.log('no data');
         }
@@ -59,10 +63,6 @@ export const Configurator = () => {
     const handleFullscreen = useCallback(() => {
         requestFullscreen(true);
     }, [requestFullscreen]);
-
-    useEffect(() => {
-        console.log(selection);
-    }, [selection]);
 
     const handleSelect = useCallback(
         (event: React.MouseEvent<HTMLElement>, selected: string) => {
@@ -74,7 +74,6 @@ export const Configurator = () => {
 
     const handleSetSelection = useCallback(
         (selection: string) => {
-            console.log('received', selection);
             setSelection(selection);
         },
         [setSelection],
