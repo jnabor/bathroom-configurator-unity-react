@@ -9,6 +9,8 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import Tooltip from '@mui/material/Tooltip';
 
+import { Progress } from './common/components/Progress';
+
 import './App.css';
 
 export const Configurator = () => {
@@ -23,9 +25,9 @@ export const Configurator = () => {
         removeEventListener,
     } = useUnityContext({
         loaderUrl: 'build/dist.loader.js',
-        dataUrl: 'build/dist.data',
-        frameworkUrl: 'build/dist.framework.js',
-        codeUrl: 'build/dist.wasm',
+        dataUrl: 'build/dist.data.unityweb',
+        frameworkUrl: 'build/dist.framework.js.unityweb',
+        codeUrl: 'build/dist.wasm.unityweb',
         streamingAssetsUrl: 'StreamingAssets',
         webglContextAttributes: {
             alpha: true,
@@ -42,10 +44,8 @@ export const Configurator = () => {
     });
     const [selection, setSelection] = useState('1');
 
-    const loadingPercentage = useMemo(
-        () => Math.round(loadingProgression * 100),
-        [loadingProgression],
-    );
+
+    const progress = useMemo(() => Math.round(loadingProgression * 100), [loadingProgression])
 
     const handleScreenshot = useCallback(() => {
         const data = takeScreenshot('image/jpg', 0.9);
@@ -95,7 +95,7 @@ export const Configurator = () => {
                 </Typography>
                 {isLoaded === false && (
                     <div className='loading-overlay'>
-                        <p>Loading... ({loadingPercentage}%)</p>
+                        <Progress value={progress} />
                     </div>
                 )}
                 <Unity className='unity' unityProvider={unityProvider} />
