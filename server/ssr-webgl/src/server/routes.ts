@@ -12,7 +12,7 @@ type GetCfg = {
 
 router.get('/', (req, res) => {
     logger.info('Received root request');
-    res.status(200).send(`CRS SSR WebGL Server`);
+    res.status(200).send({ res: "online" });
 });
 
 router.get<GetCfg>('/image/:cfg', async (req, res) => {
