@@ -59,9 +59,9 @@ export const Controls = ({
                     onChange={handleSelect}
                     aria-label='Platform'
                 >
-                    <ToggleButton value='1'>SINK 1</ToggleButton>
-                    <ToggleButton value='2'>SINK 2</ToggleButton>
-                    <ToggleButton value='3'>SINK 3</ToggleButton>
+                    <ToggleButton id="1" value='1'>SINK 1</ToggleButton>
+                    <ToggleButton id="2" value='2'>SINK 2</ToggleButton>
+                    <ToggleButton id="3" value='3'>SINK 3</ToggleButton>
                 </ToggleButtonGroup>
             </div>
             <div className='screen'>
