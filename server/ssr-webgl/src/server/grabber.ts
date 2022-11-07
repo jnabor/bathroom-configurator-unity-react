@@ -14,7 +14,17 @@ class Grabber {
 
     public async initialize() {
         logger.info('Initializing grabber...');
-        this.browser = await puppeteer.launch({ headless: true });
+
+        try {
+            this.browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            });
+        } catch (e) {
+            logger.info('ERROR puppeteer launch', e);
+            throw e;
+        }
+
         this.page = await this.browser.newPage();
         this.page.setViewport({ width: 1200, height: 1200 });
 
@@ -29,7 +39,7 @@ class Grabber {
         if (!this.canvas) return '';
 
         const els = await this.page.$(`#\\3${cfgId}`);
-        els && await els.click();
+        els && (await els.click());
 
         const imageBuffer = await this.canvas.screenshot({
             type: 'jpeg',
@@ -37,7 +47,7 @@ class Grabber {
             omitBackground: true,
         });
 
-        logger.info("Image generated")
+        logger.info('Image generated');
         return imageBuffer;
     }
 

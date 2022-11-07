@@ -35,7 +35,7 @@ function listen(port: number): Promise<Server> {
 export async function startServer() {
     try {
         if (!validateConfig()) throw new Error('Missing configuration!');
-
+        
         await grabber.initialize();
         await listen(PORT);
 

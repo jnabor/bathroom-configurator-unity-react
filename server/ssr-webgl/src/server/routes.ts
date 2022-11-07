@@ -21,8 +21,13 @@ router.get<GetCfg>('/image/:cfg', async (req, res) => {
     const cfg = req.params.cfg.slice(0, 1);
     const buffer = await grabber.getImage(cfg)
 
-    res.contentType('image/jpg');
-    res.status(200).send(buffer);
+    if (buffer) {
+        res.contentType('image/jpg');
+        res.status(200).send(buffer);
+        return;
+    }
+
+    res.status(400).send();
 });
 
 export default router;
