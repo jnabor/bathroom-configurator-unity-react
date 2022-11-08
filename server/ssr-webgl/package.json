@@ -9,7 +9,7 @@
     "build:exec": "ttsc",
     "clean": "rimraf dist/*",
     "lint": "eslint .",
-    "image:build": "docker build -t ssr-webgl .",
+    "image:build": "docker build --platform linux/amd64 -t ssr-webgl .",
     "image:start": "DOCKER_DEFAULT_PLATFORM=linux/amd64 docker run -p 80:80 ssr-webgl",
     "lint:fix": "eslint . --fix",
     "run:local": "run-s image:build image:start",

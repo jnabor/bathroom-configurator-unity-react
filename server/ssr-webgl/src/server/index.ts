@@ -41,6 +41,6 @@ export async function startServer() {
 
         console.log(`🚀 Server running on port ${PORT}`);
     } catch (e) {
-        logger.error('Server start error!');
+        logger.error('Server start error!', e);
     }
 }
