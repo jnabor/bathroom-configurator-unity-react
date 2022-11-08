@@ -47,8 +47,13 @@ export class SsrWebGlStack extends cdk.Stack {
 
         taskDefinition.addContainer('SsrWebGlContainer', {
             image: ecs.ContainerImage.fromDockerImageAsset(asset),
+            cpu: 256,
+            memoryLimitMiB: 512,
             logging: logDriver,
-            portMappings: [{ containerPort: 80 }],
+        });
+
+        taskDefinition?.defaultContainer?.addPortMappings({
+            containerPort: 80,
         });
 
         const crsService = new ApplicationLoadBalancedFargateService(

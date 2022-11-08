@@ -1,8 +1,9 @@
 .vscode
-src
+dist
 Dockerfile
-jrst.config.jr
+jest.config.js
 ngrok
 nodemon.json
 README.md
 package-lock.json
+node_modules

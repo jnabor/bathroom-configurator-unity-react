@@ -17,8 +17,16 @@ class Grabber {
 
         try {
             this.browser = await puppeteer.launch({
+                executablePath: '/usr/bin/google-chrome',
                 headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                timeout: 60000,
+                args: [
+                    '--disable-extensions',
+                    '--disable-gpu',
+                    '--disable-dev-shm-usage',
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                ],
             });
         } catch (e) {
             logger.info('ERROR puppeteer launch', e);

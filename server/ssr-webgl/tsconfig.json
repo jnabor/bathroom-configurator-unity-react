@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "ES2019",
     "module": "CommonJS",
-    "sourceMap": true,
+    "sourceMap": false,
     "lib": ["es2019", "es2020.Promise", "esnext.bigint", "dom"],
     "outDir": "dist/",
-    "declaration": true,
+    "declaration": false,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -38,6 +38,6 @@
       }
     ]
   },
-  "include": ["./src/**/*.ts", "test/"],
+  "include": ["./src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
