@@ -2,12 +2,13 @@ import * as cdk from 'aws-cdk-lib';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 import { Construct } from 'constructs';
-import { Vpc, InstanceType } from 'aws-cdk-lib/aws-ec2';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ApplicationLoadBalancedFargateService } from 'aws-cdk-lib/aws-ecs-patterns';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { DockerImageAsset, Platform } from 'aws-cdk-lib/aws-ecr-assets';
-import { Role, ManagedPolicy, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Distribution, OriginProtocolPolicy  } from 'aws-cdk-lib/aws-cloudfront';
+import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
 export class SsrWebGlStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
@@ -82,6 +83,15 @@ export class SsrWebGlStack extends cdk.Stack {
             healthyHttpCodes: '200',
         });
 
+        const origin = new HttpOrigin(crsService.loadBalancer.loadBalancerDnsName, {
+            protocolPolicy: OriginProtocolPolicy.MATCH_VIEWER,
+            connectionAttempts: 3,
+          });
+
+        const distribution = new Distribution(this, 'CrsDist', {
+            defaultBehavior: { origin }
+          });
+
         new cdk.CfnOutput(this, 'Image URI', { value: asset.imageUri });
         new cdk.CfnOutput(this, 'Image Repository', {
             value: asset.repository.repositoryName,
@@ -89,8 +99,11 @@ export class SsrWebGlStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'Log Group', {
             value: logGroup.logGroupName,
         });
-        new cdk.CfnOutput(this, 'Endpoint', {
+        new cdk.CfnOutput(this, 'Load Balancer', {
             value: crsService.loadBalancer.loadBalancerDnsName,
+        });
+        new cdk.CfnOutput(this, 'Endpoint', {
+            value: distribution.domainName,
         });
     }
 }

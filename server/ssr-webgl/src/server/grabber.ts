@@ -1,6 +1,7 @@
 import puppeteer, { Browser, Page, ElementHandle } from 'puppeteer';
 import logger from '../utils/logger';
 
+const chromePath = process.env.CHROME_EXECUTABLE_PATH || ''
 const url = 'https://bathroom-configurator-urp.netlify.app/';
 const canvasSelector = '#react-unity-webgl-canvas-1';
 
@@ -17,7 +18,7 @@ class Grabber {
 
         try {
             this.browser = await puppeteer.launch({
-                executablePath: '/usr/bin/google-chrome',
+                executablePath: chromePath,
                 headless: true,
                 timeout: 60000,
                 args: [
@@ -34,7 +35,6 @@ class Grabber {
         }
 
         this.page = await this.browser.newPage();
-        this.page.setViewport({ width: 1200, height: 1200 });
 
         await this.page.goto(url, { waitUntil: 'networkidle2' });
         await this.page.waitForSelector(canvasSelector);
