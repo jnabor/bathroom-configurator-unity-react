@@ -9,7 +9,9 @@ import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Distribution, OriginProtocolPolicy  } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins'
-export class SsrWebGlStack extends cdk.Stack {
+import { Duration } from 'aws-cdk-lib';
+
+export class SsrWebGlEcsStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -43,13 +45,13 @@ export class SsrWebGlStack extends cdk.Stack {
             'SsrWebGlTaskDef',
             {
                 taskRole: role,
+                cpu: 1024,
+                memoryLimitMiB: 2048
             },
         );
 
         taskDefinition.addContainer('SsrWebGlContainer', {
             image: ecs.ContainerImage.fromDockerImageAsset(asset),
-            cpu: 256,
-            memoryLimitMiB: 512,
             logging: logDriver,
         });
 
@@ -86,6 +88,8 @@ export class SsrWebGlStack extends cdk.Stack {
         const origin = new HttpOrigin(crsService.loadBalancer.loadBalancerDnsName, {
             protocolPolicy: OriginProtocolPolicy.MATCH_VIEWER,
             connectionAttempts: 3,
+            connectionTimeout: Duration.seconds(10),
+            keepaliveTimeout: Duration.seconds(30)
           });
 
         const distribution = new Distribution(this, 'CrsDist', {

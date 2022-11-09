@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { SsrWebGlStack } from '../lib/ssr-webgl-stack';
+import { SsrWebGlEcsStack } from '../lib/ssr-webgl-ecs-stack';
+import { SsrWebGlEc2Stack } from '../lib/ssr-webgl-ec2-stack';
 
 const accountId = process.env.CDK_DEFAULT_ACCOUNT || '';
 const accountRegion = process.env.CDK_DEFAULT_REGION || '';
@@ -15,6 +16,10 @@ const stackProps: SsrWebGlProps = {
     env: { account: accountId, region: accountRegion },
 };
 
-const ssrWebGlStack = new SsrWebGlStack(app, 'SsrWebGlStack', { ...stackProps });
-cdk.Tags.of(ssrWebGlStack).add("CRS Deploy Type", "ECS");
-cdk.Tags.of(ssrWebGlStack).add("CRS Cost", "CRS SSR WebGl");
+const ssrWebGlEcsStack = new SsrWebGlEcsStack(app, 'SsrWebGlEcsStack', { ...stackProps });
+cdk.Tags.of(ssrWebGlEcsStack).add("Deploy Type", "ECS");
+cdk.Tags.of(ssrWebGlEcsStack).add("Cost", "ECS SSR WebGl");
+
+const ssrWebGlEc2Stack = new SsrWebGlEcsStack(app, 'SsrWebGlEc2Stack', { ...stackProps });
+cdk.Tags.of(ssrWebGlEc2Stack).add("Deploy Type", "EC2");
+cdk.Tags.of(ssrWebGlEc2Stack).add("Cost", "EC@ SSR WebGl");

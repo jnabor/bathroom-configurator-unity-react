@@ -5,7 +5,11 @@
     "app": "bin/app.js"
   },
   "scripts": {
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "deploy-ecs": "cdk deploy SsrWebGlEcsStack",
+    "deploy-ec2": "cdk deploy SsrWebGlEc2Stack",
+    "destroy-ecs": "cdk destroy SsrWebGlEcsStack",
+    "destroy-ec2": "cdk destroy SsrWebGlEc2Stack"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
