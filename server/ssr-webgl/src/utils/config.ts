@@ -4,7 +4,7 @@ env.config({ path: path.resolve(`./.env`) });
 
 import logger from './logger';
 
-export const PORT = 80;
+export const PORT = 8080;
 
 const { ROOT_LOG_LEVEL } = process.env;
 

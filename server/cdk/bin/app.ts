@@ -20,6 +20,6 @@ const ssrWebGlEcsStack = new SsrWebGlEcsStack(app, 'SsrWebGlEcsStack', { ...stac
 cdk.Tags.of(ssrWebGlEcsStack).add("Deploy Type", "ECS");
 cdk.Tags.of(ssrWebGlEcsStack).add("Cost", "ECS SSR WebGl");
 
-const ssrWebGlEc2Stack = new SsrWebGlEcsStack(app, 'SsrWebGlEc2Stack', { ...stackProps });
+const ssrWebGlEc2Stack = new SsrWebGlEc2Stack(app, 'SsrWebGlEc2Stack', { ...stackProps });
 cdk.Tags.of(ssrWebGlEc2Stack).add("Deploy Type", "EC2");
 cdk.Tags.of(ssrWebGlEc2Stack).add("Cost", "EC@ SSR WebGl");
