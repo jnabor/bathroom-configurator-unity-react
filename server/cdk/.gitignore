@@ -2,3 +2,4 @@ node_modules
 img/.dist
 cdk.out
 cdk.context.json
+ssr-webgl

@@ -18,7 +18,7 @@ class Grabber {
 
         try {
             this.browser = await puppeteer.launch({
-                executablePath: chromePath,
+                ...(chromePath && {executablePath: chromePath}),
                 headless: true,
                 timeout: 60000,
                 args: [

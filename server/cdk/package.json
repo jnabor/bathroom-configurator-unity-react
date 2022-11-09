@@ -6,10 +6,12 @@
   },
   "scripts": {
     "cdk": "cdk",
+    "deploy": "npm run clean; deploy-ec2",
     "deploy-ecs": "cdk deploy SsrWebGlEcsStack",
     "deploy-ec2": "cdk deploy SsrWebGlEc2Stack",
     "destroy-ecs": "cdk destroy SsrWebGlEcsStack",
-    "destroy-ec2": "cdk destroy SsrWebGlEc2Stack"
+    "destroy-ec2": "cdk destroy SsrWebGlEc2Stack",
+    "update-files": "./update-files.sh"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
