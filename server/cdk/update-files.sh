@@ -3,6 +3,7 @@
 echo "Copying files..."
 
 rm -r ssr-webgl/*
+rm -r cdk.out/*
 
 cp -a ../ssr-webgl/src/ ssr-webgl/src/
 cp ../ssr-webgl/package.json ssr-webgl/package.json

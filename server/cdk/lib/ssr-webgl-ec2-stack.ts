@@ -75,8 +75,8 @@ export class SsrWebGlEc2Stack extends cdk.Stack {
             nvidia drivers, nvm (+ node.js 16.x), aws cli (+configuration), chrome
         */
         const ami = ec2.MachineImage.lookup({
-            name: 'ubuntu-18.04-aws-nvidia-chrome',
-            // owners: ['XXXXXXXXXXXX']
+            name: 'ubuntu-18.04-aws-nvidia-chrome-v2',
+            owners: ['815621908682']
         });
 
         const keyPair = new ec2.CfnKeyPair(this, 'SsrWebGlKeyPair', {
@@ -98,14 +98,14 @@ export class SsrWebGlEc2Stack extends cdk.Stack {
 
         instance.userData.addCommands(
             ...baseCommands,
-            'cd home/ubuntu/',
-            'rm -rf ssr-webgl',
-            'mkdir ssr-webgl',
-            `aws s3 cp s3://${bucket.bucketName}/ssr-webgl /home/ubuntu/ssr-webgl --recursive`,
-            'cd ssr-webgl',
-            'npm install',
-            'npm run build',
-            'npm run start',
+            // 'cd home/ubuntu/',
+            // 'rm -rf ssr-webgl',
+            // 'mkdir ssr-webgl',
+            // `aws s3 cp s3://${bucket.bucketName}/ssr-webgl /home/ubuntu/ssr-webgl --recursive`,
+            // 'cd ssr-webgl',
+            // 'npm install',
+            // 'npm run build',
+            // 'npm run start',
         );
 
         new cdk.CfnOutput(this, 'bucketName', { value: bucket.bucketName });
@@ -122,4 +122,6 @@ const baseCommands = [
     'iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080',
     'iptables -A INPUT -p tcp -m tcp --sport 80 -j ACCEPT',
     'iptables -A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT',
+    'iptables -A INPUT -p tcp -m tcp --sport 8080 -j ACCEPT',
+    'iptables -A OUTPUT -p tcp -m tcp --dport 8080 -j ACCEPT',
 ];

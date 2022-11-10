@@ -7,17 +7,16 @@ import { Controls } from './common/components/Controls';
 
 import './App.css';
 
-const baseUrl = 'https://f841-70-48-67-241.ngrok.io/image';
-// const baseUrl = 'http://localhost/image ';
+const baseUrl = 'http://ec2-3-87-187-249.compute-1.amazonaws.com:8080/';
 
 export const Configurator = () => {
     const [online, setOnline] = useState(false);
     const [selection, setSelection] = useState('1');
     const [loading, setLoading] = useState(true);
-    const [img, setImg] = useState(`${baseUrl}/1.jpg`);
+    const [img, setImg] = useState(`${baseUrl}image/1.jpg`);
 
     useEffect(() => {
-        fetch('https://f841-70-48-67-241.ngrok.io/')
+        fetch(baseUrl)
             .then((res) => res.json())
             .then((data) => {
                 data.res === 'online' && setOnline(true);
@@ -26,7 +25,7 @@ export const Configurator = () => {
 
     useEffect(() => {
         setLoading(true);
-        setImg(`${baseUrl}/${selection}.jpg`);
+        setImg(`${baseUrl}image/${selection}.jpg`);
     }, [selection]);
 
     useEffect(() => {
