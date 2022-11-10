@@ -70,29 +70,18 @@ export class SsrWebGlEc2Stack extends cdk.Stack {
             ],
         });
 
-        /* use nvidia gaming pc - ubuntu 18.04
-           https://aws.amazon.com/marketplace/pp/prodview-p64lyuknl2pys?sr=0-1&ref_=beagle&applicationId=AWS-EC2-Console
-        */
         const ami = ec2.MachineImage.lookup({
             name: 'nv-ubuntu-18-lts-cloudGaming-510.68.02-v202204250312-offer-31487f48-b87f-4b97-ac6b-df34a9569256',
-            filters: {
-                architecture: ['x86_64'],
-            },
         });
 
-        /*
-        const ami = ec2.MachineImage.latestAmazonLinux({
-            generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
-            edition: ec2.AmazonLinuxEdition.STANDARD,
-            virtualization: ec2.AmazonLinuxVirt.HVM,
-            storage: ec2.AmazonLinuxStorage.GENERAL_PURPOSE,
-            cpuType: ec2.AmazonLinuxCpuType.X86_64,
-          });
-          */
+        const keyPair = new ec2.CfnKeyPair(this, 'SsrWebGlKeyPair', {
+            keyName: 'SsrWebGlKey',
+        });
 
         const instance = new ec2.Instance(this, 'SsrWebGlInstance', {
             vpc,
             role,
+            keyName: keyPair.keyName,
             vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
             instanceType: ec2.InstanceType.of(
                 ec2.InstanceClass.G4DN,
@@ -103,16 +92,16 @@ export class SsrWebGlEc2Stack extends cdk.Stack {
         });
 
         instance.userData.addCommands(
-            'exec > >(tee /var/log/user-data.log|logger -tt user-data -s 2>/dev/console) 2>&1',
+            'exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1',
             'echo USER DATA START',
             ...baseCommands,
             'rm -rf ssr-webgl',
             'mkdir ssr-webgl',
-            `aws s3 cp s3://${bucket.bucketName}/ssr-webgl ssr-webgl --recursive`,
-            'cd ssr-webgl',
-            'npm install',
-            'npm run build',
-            'npm run start',
+            // `aws s3 cp s3://${bucket.bucketName}/ssr-webgl ssr-webgl --recursive`,
+            // 'cd ssr-webgl',
+            // 'npm install',
+            // 'npm run build',
+            // 'npm run start',
             'echo USER DATA END',
         );
 
